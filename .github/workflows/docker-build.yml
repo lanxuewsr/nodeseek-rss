@@ -27,5 +27,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            lanxuewsr/nodeseek-rss:1.0.0
+            lanxuewsr/nodeseek-rss:1.0.1
             lanxuewsr/nodeseek-rss:latest

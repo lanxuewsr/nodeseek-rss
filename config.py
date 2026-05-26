@@ -1,9 +1,10 @@
 import os
+import re
 from dotenv import load_dotenv
 
 load_dotenv()
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 
 TELEGRAM_BOT_TOKEN: str = os.environ["TELEGRAM_BOT_TOKEN"]
 ALLOWED_USER_ID: int = int(os.environ["ALLOWED_USER_ID"])
@@ -42,3 +43,34 @@ EMAIL_TIMEOUT_SECONDS: int = int(os.getenv("EMAIL_TIMEOUT_SECONDS", "20"))
 
 def email_configured() -> bool:
     return bool(EMAIL_ENABLED and RESEND_API_KEY and RESEND_TO)
+
+
+def mask_secret(value: str, head: int = 4, tail: int = 4) -> str:
+    if not value:
+        return "<empty>"
+    if len(value) <= head + tail:
+        return "***"
+    return f"{value[:head]}...{value[-tail:]}"
+
+
+def validate_config() -> list[str]:
+    errors: list[str] = []
+
+    if not TELEGRAM_BOT_TOKEN:
+        errors.append("TELEGRAM_BOT_TOKEN is empty.")
+    elif not re.match(r"^\d+:[A-Za-z0-9_-]{20,}$", TELEGRAM_BOT_TOKEN):
+        errors.append(
+            "TELEGRAM_BOT_TOKEN format is invalid. It should look like "
+            "'123456789:AA...'. Get the full token from @BotFather."
+        )
+
+    if ALLOWED_USER_ID <= 0:
+        errors.append("ALLOWED_USER_ID must be a positive Telegram user ID.")
+
+    if EMAIL_ENABLED:
+        if not RESEND_API_KEY:
+            errors.append("EMAIL_ENABLED=true but RESEND_API_KEY is empty.")
+        if not RESEND_TO:
+            errors.append("EMAIL_ENABLED=true but RESEND_TO is empty.")
+
+    return errors

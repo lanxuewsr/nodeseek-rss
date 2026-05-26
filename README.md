@@ -2,7 +2,7 @@
 
 NodeSeek RSS is a private monitor for [NodeSeek](https://www.nodeseek.com/) RSS feeds. It watches new posts, matches configured keywords, and sends notifications through Telegram and Resend email.
 
-Version: `1.0.0`
+Version: `1.0.1`
 
 This project is developed on top of [n-AChegYag/nodeseek-keywords](https://github.com/n-AChegYag/nodeseek-keywords). The original Telegram keyword monitor was used as the base, then Resend email notification, unified channel status, log rotation, database retention cleanup, and multi-arch Docker packaging were added.
 
@@ -126,7 +126,7 @@ SMTP2HTTP is intentionally not included. Email is sent through Resend only.
 Published tags:
 
 ```text
-lanxuewsr/nodeseek-rss:1.0.0
+lanxuewsr/nodeseek-rss:1.0.1
 lanxuewsr/nodeseek-rss:latest
 ```
 
@@ -135,7 +135,7 @@ Manual multi-arch build:
 ```bash
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
-  -t lanxuewsr/nodeseek-rss:1.0.0 \
+  -t lanxuewsr/nodeseek-rss:1.0.1 \
   -t lanxuewsr/nodeseek-rss:latest \
   --push .
 ```

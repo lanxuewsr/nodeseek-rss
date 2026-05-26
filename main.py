@@ -6,6 +6,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
+from telegram.error import InvalidToken
 from telegram.ext import Application, CommandHandler
 
 import bot
@@ -48,6 +49,16 @@ def main() -> None:
     _setup_logging()
     log = logging.getLogger(__name__)
 
+    config_errors = config.validate_config()
+    if config_errors:
+        for error in config_errors:
+            log.error("Configuration error: %s", error)
+        log.error(
+            "Startup stopped. TELEGRAM_BOT_TOKEN=%s",
+            config.mask_secret(config.TELEGRAM_BOT_TOKEN),
+        )
+        raise SystemExit(2)
+
     storage.init_db()
     log.info("Database ready at %s", config.DATABASE_PATH)
 
@@ -84,7 +95,15 @@ def main() -> None:
         config.ALLOWED_USER_ID,
         config.POLL_INTERVAL,
     )
-    app.run_polling(drop_pending_updates=True)
+    try:
+        app.run_polling(drop_pending_updates=True)
+    except InvalidToken:
+        log.error(
+            "Telegram rejected TELEGRAM_BOT_TOKEN=%s. "
+            "Open @BotFather, copy the full token, update .env, then restart the container.",
+            config.mask_secret(config.TELEGRAM_BOT_TOKEN),
+        )
+        raise SystemExit(2)
 
 
 if __name__ == "__main__":

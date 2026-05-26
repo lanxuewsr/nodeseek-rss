@@ -2,7 +2,7 @@
 
 NodeSeek RSS 是一个私人的 [NodeSeek](https://www.nodeseek.com/) RSS 监控程序。它会定时检查新帖子，匹配你配置的关键词，并通过 Telegram 和 Resend 邮件发送通知。
 
-版本：`1.0.0`
+版本：`1.0.1`
 
 本项目基于 [n-AChegYag/nodeseek-keywords](https://github.com/n-AChegYag/nodeseek-keywords) 开发。原项目提供了 Telegram 关键词监控基础能力，本项目在此基础上增加了 Resend 邮件通知、分通道通知状态、日志轮转、数据库保留清理和多架构 Docker 打包。
 
@@ -204,7 +204,7 @@ data/nodeseek-rss.db
 已发布标签：
 
 ```text
-lanxuewsr/nodeseek-rss:1.0.0
+lanxuewsr/nodeseek-rss:1.0.1
 lanxuewsr/nodeseek-rss:latest
 ```
 
@@ -213,7 +213,7 @@ lanxuewsr/nodeseek-rss:latest
 ```bash
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
-  -t lanxuewsr/nodeseek-rss:1.0.0 \
+  -t lanxuewsr/nodeseek-rss:1.0.1 \
   -t lanxuewsr/nodeseek-rss:latest \
   --push .
 ```
