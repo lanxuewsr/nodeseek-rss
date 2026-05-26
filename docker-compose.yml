@@ -1,0 +1,12 @@
+services:
+  bot:
+    build: .
+    image: lanxuewsr/nodeseek-rss:latest
+    container_name: nodeseek-rss
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      # Persist the SQLite database across container restarts / rebuilds
+      - ./data:/app/data
+      # Persist rotated log files
+      - ./logs:/app/logs
